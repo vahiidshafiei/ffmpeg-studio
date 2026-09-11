@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# PyInstaller build output (regenerate with build/build.py — never commit)
+dist/
+build/_pyinstaller/
+*.spec
+
+# A locally-bundled ffmpeg/ffprobe for Option A packaging — large binaries
+# with their own license; don't commit them to this repo.
+/ffmpeg/
+
+# Editor/OS clutter
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# App logs/settings if ever accidentally created inside the project folder
+# (the real ones live in %APPDATA%\FFmpegStudio, not here)
+logs/

@@ -1,0 +1,14 @@
+{
+  "id": "high_quality",
+  "name": "High Quality",
+  "operation": "compress",
+  "description": "Prioritizes quality over file size — for archival or further editing.",
+  "params": {
+    "codec": "h264",
+    "crf": 16,
+    "preset": "slow",
+    "resolution": null,
+    "audio_mode": "aac",
+    "audio_bitrate": "256k"
+  }
+}

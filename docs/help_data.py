@@ -1,0 +1,443 @@
+"""Content for the generated help.html — this is the file to edit when a
+page's behavior changes or a new page ships. generate_help.py turns this
+into the actual HTML; it should rarely need touching itself.
+
+Structure: HELP_VERSION/HELP_DATE are stamped into the footer so it's
+obvious which app version a given help.html documents. MODULES is an
+ordered list of sections; each becomes one entry in the sidebar nav and one
+section in the page. `body` is a list of HTML fragments (already-safe
+markup: <p>, <ul>, <code>, etc.) — the generator does no escaping, so keep
+this file the only place untrusted input could ever reach, which in
+practice is never, since it's authored by hand.
+"""
+
+HELP_VERSION = "1.0.0"
+HELP_DATE = "2026-09-10"
+
+MODULES = [
+    {
+        "id": "getting-started",
+        "icon": "🚀",
+        "title": "Getting Started",
+        "summary": "What FFmpeg Studio is and the one idea that runs through every page.",
+        "body": [
+            "<p>FFmpeg Studio is a graphical frontend for FFmpeg. Every page follows the same "
+            "shape: pick input(s), set options, review the <strong>exact FFmpeg command</strong> "
+            "it's about to run, then click Run. Nothing here hides what's actually happening — "
+            "if you know FFmpeg, you can always see and copy the real command; if you don't, the "
+            "options are labeled in plain language.</p>",
+            "<h3>Keyboard shortcuts</h3>",
+            "<ul>"
+            "<li><code>F1</code> — open this Help page</li>"
+            "<li><code>Ctrl+,</code> — jump straight to Settings</li>"
+            "<li><code>Ctrl+Q</code> — quit the app</li>"
+            "</ul>",
+            "<h3>The pattern every page shares</h3>",
+            "<ul>"
+            "<li><strong>Select input</strong> — via a file dialog or drag-and-drop.</li>"
+            "<li><strong>Set options</strong> — the command preview box updates live as you change them.</li>"
+            "<li><strong>Run</strong> — FFmpeg runs in the background; the app stays responsive, "
+            "and you get a progress bar with time/speed/ETA.</li>"
+            "<li><strong>Done</strong> — the output is saved next to your input by default (or "
+            "wherever you typed in the Output name field), logged to History, and the folder "
+            "opens automatically if you've turned that on in Settings.</li>"
+            "</ul>",
+            "<h3>Before anything else: FFmpeg has to be found</h3>",
+            "<p>See <a href=\"#ffmpeg-setup\">FFmpeg Setup</a> — nothing else works until the "
+            "Home page shows a green \"FFmpeg detected.\"</p>",
+        ],
+    },
+    {
+        "id": "ffmpeg-setup",
+        "icon": "🔧",
+        "title": "FFmpeg Setup",
+        "summary": "How the app finds ffmpeg.exe and ffprobe.exe, and what to do if it can't.",
+        "body": [
+            "<p>FFmpeg Studio looks for FFmpeg in this order, and uses the first one it finds:</p>",
+            "<ol>"
+            "<li><strong>A path you set manually</strong> in Settings → FFmpeg.</li>"
+            "<li><strong>A bundled copy</strong> — an <code>ffmpeg/</code> folder containing "
+            "<code>ffmpeg.exe</code> and <code>ffprobe.exe</code> sitting next to the app itself.</li>"
+            "<li><strong>Your system PATH</strong> — if FFmpeg is installed normally (e.g. via "
+            "<code>winget install ffmpeg</code>), this is usually what gets used.</li>"
+            "</ol>",
+            "<p>If Home shows <strong>\"✗ FFmpeg not detected\"</strong>: install FFmpeg (or confirm "
+            "it's on PATH), then click <strong>Detect Automatically</strong> in Settings — or "
+            "just Browse… directly to your <code>ffmpeg.exe</code> and <code>ffprobe.exe</code>.</p>",
+            "<p>ffprobe (which ships alongside ffmpeg) is used constantly behind the scenes — it's "
+            "how the app reads a file's real duration, resolution, codec, and bitrate instead of "
+            "guessing from the file extension.</p>",
+        ],
+    },
+    {
+        "id": "home",
+        "icon": "🏠",
+        "title": "Home",
+        "summary": "FFmpeg status at a glance, and quick links into the operations you use most.",
+        "body": [
+            "<p>The dashboard. It shows whether FFmpeg was detected (and which of the three "
+            "detection methods found it), and gives one-click buttons into Convert, Compress, "
+            "Trim, Merge, Audio, and Images → Video so you don't have to hunt through the sidebar "
+            "for the page you use daily.</p>",
+        ],
+    },
+    {
+        "id": "compress",
+        "icon": "🗜",
+        "title": "Compress",
+        "summary": "Shrink a video's file size. Codec, CRF, preset, resolution, and audio, all in plain terms.",
+        "body": [
+            "<p>Pick a video and the app immediately reads its real duration/resolution/codec via "
+            "ffprobe, so the info line above the options is always accurate, not a guess from the "
+            "filename.</p>",
+            "<h3>The options, in practice</h3>",
+            "<ul>"
+            "<li><strong>Codec</strong> — H.264 is the safe, universally-compatible default. H.265 "
+            "gives smaller files at the same quality but takes longer to encode and isn't supported "
+            "everywhere. AV1 is smaller still but slower and less compatible.</li>"
+            "<li><strong>CRF</strong> — the main quality/size knob. Lower = higher quality, bigger "
+            "file. 18–23 is visually lossless to \"very good\" for most content; 28+ starts showing "
+            "compression artifacts. There's no \"correct\" number — it depends on the source and "
+            "your tolerance for file size.</li>"
+            "<li><strong>Preset</strong> — how hard the encoder works to compress efficiently. "
+            "Slower presets produce smaller files at the same CRF, at the cost of encoding time. "
+            "<code>medium</code> is a reasonable default; drop to <code>fast</code> if you're "
+            "encoding a lot of files and don't need the last few percent of compression.</li>"
+            "<li><strong>Resolution</strong> — downscaling (e.g. 1080p → 720p) is one of the most "
+            "effective ways to shrink a file, often more impactful than tweaking CRF.</li>"
+            "<li><strong>Audio</strong> — \"copy\" keeps the original audio stream untouched (fast, "
+            "no quality loss, but no size savings on the audio track). Re-encoding to AAC at a "
+            "lower bitrate saves more space if the audio track is a meaningful chunk of the file.</li>"
+            "</ul>",
+            "<p>The <strong>Output name</strong> field is optional — leave it blank and you get "
+            "<code>yourfile_compressed.mp4</code> automatically.</p>",
+        ],
+    },
+    {
+        "id": "convert",
+        "icon": "🎬",
+        "title": "Convert",
+        "summary": "Change container/codec — MP4, MKV, MOV, AVI, WebM — with friendly quality presets or full manual control.",
+        "body": [
+            "<p>Use this when you need a specific container or codec rather than just a smaller "
+            "file — e.g. converting a <code>.mov</code> from a phone into a <code>.mp4</code> "
+            "that's more universally playable, or re-encoding into VP9/AV1 for web delivery.</p>",
+            "<h3>Quality presets</h3>",
+            "<p>\"Very High / High / Medium / Low\" map to sensible CRF values (18/20/23/28) behind "
+            "the scenes — pick one of these unless you specifically need a custom CRF or target "
+            "bitrate. Choosing <strong>copy</strong> for either codec skips re-encoding that stream "
+            "entirely — instant and lossless, but only works if the target container actually "
+            "supports the source codec (e.g. you generally can't copy H.265 video into an "
+            "old-style AVI).</p>",
+        ],
+    },
+    {
+        "id": "trim",
+        "icon": "✂",
+        "title": "Trim / Cut",
+        "summary": "Cut a clip out of a video by start time and either an end time or a duration.",
+        "body": [
+            "<p>Enter a Start time and either an End time or a Duration (whichever is easier to "
+            "think about for what you're cutting) — HH:MM:SS or HH:MM:SS.milliseconds.</p>",
+            "<h3>Fast vs. Accurate — this matters</h3>",
+            "<ul>"
+            "<li><strong>Fast</strong> — copies the video/audio streams without re-encoding. "
+            "Nearly instant, but the actual cut can only land on the nearest keyframe, so your "
+            "clip's start might be off by up to a second or two depending on the source's keyframe "
+            "interval.</li>"
+            "<li><strong>Accurate</strong> — re-encodes the clip, so the cut lands exactly where "
+            "you asked. Takes real encoding time, scaling with clip length.</li>"
+            "</ul>",
+            "<p>Rule of thumb: try Fast first. If the start of your clip looks off, switch to "
+            "Accurate.</p>",
+        ],
+    },
+    {
+        "id": "merge",
+        "icon": "🔗",
+        "title": "Merge / Concatenate",
+        "summary": "Join multiple videos into one, in whatever order you arrange them.",
+        "body": [
+            "<p>Add videos, then use Move Up/Move Down to set the order they'll play in the final "
+            "file.</p>",
+            "<h3>Fast vs. Compatibility</h3>",
+            "<ul>"
+            "<li><strong>Fast</strong> — concatenates without re-encoding. Very quick, but only "
+            "works reliably when every clip shares the same codec, resolution, and frame rate — "
+            "e.g. several clips exported from the same camera or the same editing project.</li>"
+            "<li><strong>Compatibility</strong> — re-encodes everything to a common resolution/"
+            "frame rate first, so it works even when your clips differ (a phone clip plus a "
+            "screen recording plus a downloaded video, for instance). Slower, since every clip "
+            "gets re-encoded.</li>"
+            "</ul>",
+            "<p>If Fast mode produces a broken or out-of-sync result, that's the signal your clips "
+            "aren't actually compatible — switch to Compatibility mode.</p>",
+        ],
+    },
+    {
+        "id": "audio",
+        "icon": "🎵",
+        "title": "Audio Tools",
+        "summary": "Three tabs: pull audio out of a video, convert an audio file, or merge many audio files in order.",
+        "body": [
+            "<h3>Extract from Video</h3>",
+            "<p>Pulls just the audio track out of a video file — useful for turning a recorded "
+            "lecture or interview into a podcast-style audio file. Choose the output format and, "
+            "for lossy formats, a bitrate. Pick <strong>copy</strong> as the format to skip "
+            "re-encoding entirely: the original audio codec is pulled out byte-for-byte, saved as "
+            "a <code>.mka</code> file (a container that can hold essentially any audio codec) — "
+            "fastest possible option and zero quality loss, at the cost of not being able to "
+            "choose a bitrate or sample rate since nothing is being re-encoded.</p>",
+            "<h3>Convert</h3>",
+            "<p>Changes an audio file's format, bitrate, and/or sample rate. \"Keep original\" for "
+            "sample rate leaves it untouched; picking 44100 or 48000 forces a specific rate. As "
+            "with Extract, choosing <strong>copy</strong> as the format remuxes the file without "
+            "touching the audio at all (saved as <code>.mka</code>) — useful when you just want a "
+            "different container, not a different encode.</p>",
+            "<h3>Merge (Batch)</h3>",
+            "<p>This is built specifically for the \"I have a folder of numbered audio clips and "
+            "want them joined in order\" workflow. Select the folder and the app automatically "
+            "detects every audio file in it and sorts them <strong>naturally</strong> — meaning "
+            "<code>1.mp3, 2.mp3, 3.mp3, … 10.mp3, 11.mp3</code>, not the lexicographic (alphabetical) "
+            "order a plain file listing would give you, which would incorrectly put "
+            "<code>10.mp3</code> right after <code>1.mp3</code>. Reorder manually afterward if you "
+            "need something other than the natural-sort order.</p>",
+        ],
+    },
+    {
+        "id": "images",
+        "icon": "🖼",
+        "title": "Images → Video",
+        "summary": "Turn a sequence of images into a video, with a uniform duration per image and optional audio.",
+        "body": [
+            "<p>Add images, use <strong>Natural Sort</strong> to put them in numeric order (same "
+            "logic as Audio Merge — <code>img2.jpg</code> before <code>img10.jpg</code>), and set "
+            "how long each one displays. Every image gets the <em>same</em> duration here — if you "
+            "need different images to show for different lengths of time (e.g. to sync against a "
+            "voiceover), that's what the <a href=\"#storyboard\">Storyboard</a> page is for.</p>",
+            "<h3>Fit modes</h3>",
+            "<ul>"
+            "<li><strong>Fit / Pad</strong> — the whole image is visible, with black bars filling "
+            "any leftover space (letterboxing). Nothing gets cropped.</li>"
+            "<li><strong>Crop</strong> — the image fills the entire frame, cropping whatever "
+            "doesn't fit. No black bars, but edges of the image may be cut off.</li>"
+            "<li><strong>Stretch</strong> — forces the image to the exact target size, ignoring "
+            "its original aspect ratio. Fills the frame perfectly but distorts non-matching images.</li>"
+            "</ul>",
+            "<p>Adding an audio track makes the video stop as soon as whichever of "
+            "audio/images-sequence is shorter finishes (<code>-shortest</code>) — so if your "
+            "images only add up to 30 seconds but the audio is 60, the video ends at 30s.</p>",
+        ],
+    },
+    {
+        "id": "video-audio",
+        "icon": "🎚",
+        "title": "Video + Audio",
+        "summary": "Replace, add to, or strip a video's audio track.",
+        "body": [
+            "<h3>Modes</h3>",
+            "<ul>"
+            "<li><strong>Replace</strong> — the video's original audio is discarded entirely and "
+            "swapped for your chosen audio file.</li>"
+            "<li><strong>Add</strong> — your audio file is mixed together with the video's "
+            "existing audio (both play at once), rather than replacing it.</li>"
+            "<li><strong>Remove</strong> — strips all audio, no audio file needed.</li>"
+            "</ul>",
+            "<h3>Audio encoding (Replace mode)</h3>",
+            "<p>When replacing audio, choose <strong>Copy (fastest, original codec)</strong> to "
+            "attach your audio file exactly as-is with no re-encoding — the video is already "
+            "stream-copied untouched in every mode here, so with Copy selected the whole operation "
+            "just repackages both files with no quality loss and almost no processing time. "
+            "<strong>Re-encode (AAC)</strong> converts the audio to AAC first, which is safer if "
+            "your audio file's codec isn't one your target container/player supports well. Add "
+            "mode always re-encodes regardless of this setting, since mixing two audio tracks "
+            "together is a filtering operation that has to produce new audio data.</p>",
+            "<h3>Duration handling</h3>",
+            "<ul>"
+            "<li><strong>Shortest</strong> — stops as soon as the shorter of the two streams ends.</li>"
+            "<li><strong>Loop audio</strong> — repeats your audio file end-to-end until the video "
+            "ends, so a short music clip can cover a longer video without a silent gap at the end.</li>"
+            "<li><strong>Video duration</strong> — matches the video's own length as the "
+            "authoritative duration.</li>"
+            "</ul>",
+        ],
+    },
+    {
+        "id": "storyboard",
+        "icon": "🎞",
+        "title": "Storyboard: Audio + Images → Video",
+        "summary": "The most flexible option: match multiple audios to multiple images with explicit per-image timing, then merge the results.",
+        "body": [
+            "<p>Use this when Images → Video's \"same duration for every image\" isn't flexible "
+            "enough — for example, syncing images to specific moments in a voiceover, or when "
+            "different audio clips need different numbers of images (some audios might get 2 "
+            "images, others just 1 — there's no fixed ratio).</p>",
+            "<h3>The workflow, step by step</h3>",
+            "<ol>"
+            "<li><strong>Add your audios</strong> on the left panel — in whatever order you'll "
+            "eventually want them to play in the final video (you can change this later).</li>"
+            "<li><strong>Click an audio</strong> to select it — its duration is shown, and the "
+            "image-timing table on the right becomes active for that audio specifically.</li>"
+            "<li><strong>Add Image(s)</strong> to that audio. Each new image defaults to starting "
+            "right where the previous one's End left off, with a 5-second duration — edit the "
+            "<strong>Start</strong> and <strong>End</strong> columns directly to set exactly when "
+            "each image should appear and disappear.</li>"
+            "<li>Repeat for every audio. Some can have one image, others several — each audio's "
+            "image list is independent.</li>"
+            "<li><strong>Generate Videos</strong> renders one video per audio (its image sequence "
+            "plus that audio's own track). This runs as a queue, one audio at a time — if one "
+            "audio has a problem, the rest still render.</li>"
+            "<li>Once videos exist, the <strong>Final merge order</strong> list fills in "
+            "automatically. Reorder it if the final video should play the pieces in a different "
+            "order than the audio list above.</li>"
+            "<li><strong>Merge into Final Video</strong> concatenates everything into one file.</li>"
+            "</ol>",
+            "<h3>Tips</h3>",
+            "<ul>"
+            "<li><strong>Auto-Fill to Audio End</strong> sets only the <em>last</em> image's End "
+            "time to match the audio's full duration — a quick way to make sure there's no silent "
+            "gap at the end without typing the exact number.</li>"
+            "<li>An image's End time must be after its Start time — the app checks this before "
+            "rendering and tells you exactly which audio/image pair is the problem.</li>"
+            "<li>Rows are sorted by Start time automatically when generating, so it's fine to add "
+            "images out of order and fix the times afterward.</li>"
+            "<li>The <strong>Audio encoding</strong> setting in Video Settings applies to every "
+            "generated video: the video track always has to be freshly built from your images "
+            "(there's no \"original video\" to copy), but the audio being attached doesn't need "
+            "touching at all. <strong>Copy (fastest, original codec)</strong> attaches it exactly "
+            "as-is; <strong>Re-encode (AAC)</strong> converts it first, which is the safer default "
+            "if you're unsure your audio's codec plays back cleanly from an MP4 container.</li>"
+            "</ul>",
+        ],
+    },
+    {
+        "id": "shorts",
+        "icon": "📱",
+        "title": "YouTube Shorts",
+        "summary": "Convert landscape video to vertical 9:16 for Shorts, Reels, or TikTok.",
+        "body": [
+            "<h3>Modes</h3>",
+            "<ul>"
+            "<li><strong>Crop</strong> — fills the vertical frame completely by cropping the "
+            "sides of the original video. No black bars, but you lose the edges of the frame.</li>"
+            "<li><strong>Fit</strong> — keeps the entire original frame visible, adding black bars "
+            "above and below to fill out the vertical space.</li>"
+            "<li><strong>Blur</strong> — the best of both: your full video is shown centered, "
+            "with the gaps filled by a blurred, zoomed-in copy of the same video instead of plain "
+            "black bars.</li>"
+            "<li><strong>Custom</strong> — set your own exact width/height instead of the standard "
+            "1080×1920.</li>"
+            "</ul>",
+            "<h3>Audio encoding</h3>",
+            "<p>The video track always has to be re-encoded here — cropping, scaling, and the blur "
+            "background are all applied through FFmpeg's video filter chain, which requires a full "
+            "re-encode. The audio track is untouched by any of that, though, so <strong>Copy "
+            "(fastest, original codec)</strong> is available to skip re-encoding the audio "
+            "specifically — free speed with no quality loss, since nothing about the audio actually "
+            "needs to change. <strong>Re-encode (AAC)</strong> (the default) re-encodes it anyway, "
+            "which is the safer choice if you're not sure the source audio codec is broadly "
+            "compatible.</p>",
+        ],
+    },
+    {
+        "id": "batch",
+        "icon": "📦",
+        "title": "Batch Processing",
+        "summary": "Apply Compress to many files or an entire folder at once.",
+        "body": [
+            "<p>Add individual files or an entire folder (only recognized video extensions are "
+            "picked up automatically). The same compression settings are applied to every file. "
+            "Files render one at a time; if one file fails, the rest of the batch still runs — "
+            "check the per-file status icons (⏳ queued, ▶ running, ✓ done, ✗ failed) to see which "
+            "ones need attention.</p>",
+            "<p>Every file's result — success or failure — is logged to History individually, so "
+            "you can review exactly what happened after a large batch finishes.</p>",
+        ],
+    },
+    {
+        "id": "presets",
+        "icon": "⭐",
+        "title": "Presets",
+        "summary": "Built-in and custom presets — browse, duplicate, export, and import.",
+        "body": [
+            "<p>Five built-in presets ship with the app: <strong>YouTube 1080p</strong>, "
+            "<strong>YouTube Shorts</strong>, <strong>Lecture Compression</strong>, "
+            "<strong>Small File</strong>, and <strong>High Quality</strong>. Select one to see its "
+            "exact parameters listed on the right.</p>",
+            "<p>Built-in presets can't be edited or deleted, but you can <strong>Duplicate</strong> "
+            "one to create an editable custom copy, or <strong>Export</strong>/<strong>Import</strong> "
+            "presets as JSON files to back them up or share them.</p>",
+        ],
+    },
+    {
+        "id": "history",
+        "icon": "📜",
+        "title": "History",
+        "summary": "Every completed job — date, operation, input, output, and status.",
+        "body": [
+            "<p>Every job that finishes (single-file or as part of a Batch/Storyboard run) is "
+            "logged here automatically, including failures. Select an entry to "
+            "<strong>Open Output Folder</strong>, <strong>Copy Command</strong> (the exact FFmpeg "
+            "invocation that ran, for reuse or debugging), or delete individual entries. "
+            "<strong>Clear All</strong> wipes the whole history.</p>",
+        ],
+    },
+    {
+        "id": "settings",
+        "icon": "⚙",
+        "title": "Settings",
+        "summary": "FFmpeg paths, default output folder, theme, and behavior toggles.",
+        "body": [
+            "<ul>"
+            "<li><strong>FFmpeg / FFprobe executable</strong> — manually point at specific "
+            "binaries, or click Detect Automatically to re-run the bundled → PATH → "
+            "user-configured search.</li>"
+            "<li><strong>Theme</strong> — Light, Dark, or System (follows your OS's color scheme "
+            "where the OS reports one). Takes effect immediately.</li>"
+            "<li><strong>Language</strong> — switches the app's interface language (English or "
+            "Turkish, with more addable later). Takes full effect after restarting the app.</li>"
+            "<li><strong>Overwrite existing files</strong> — controls what happens when an output "
+            "file already exists: always overwrite, never (auto-renames instead), or ask every "
+            "time.</li>"
+            "<li><strong>Automatically open output folder</strong> — when on, the folder "
+            "containing your finished file opens automatically the moment a job succeeds.</li>"
+            "</ul>",
+        ],
+    },
+    {
+        "id": "about",
+        "icon": "ℹ",
+        "title": "About",
+        "summary": "Version, creators, and copyright information.",
+        "body": [
+            "<p>Shows the installed version and release date, a short description of what the "
+            "app does, the creators, and the underlying technology (Python, PySide6/Qt, and "
+            "FFmpeg itself — a separate, independently licensed project). Includes a shortcut "
+            "back into this Help page.</p>",
+        ],
+    },
+    {
+        "id": "troubleshooting",
+        "icon": "🛠",
+        "title": "Troubleshooting",
+        "summary": "Common problems and where to look.",
+        "body": [
+            "<p><strong>\"FFmpeg not detected\"</strong> — see <a href=\"#ffmpeg-setup\">FFmpeg "
+            "Setup</a> above.</p>",
+            "<p><strong>A job fails with an error dialog</strong> — every page's log panel shows "
+            "FFmpeg's actual stderr output, which almost always names the real problem (a codec "
+            "that isn't available in your FFmpeg build, incompatible inputs for a fast-mode merge, "
+            "a path FFmpeg couldn't write to, etc.). The error dialog itself also includes the "
+            "last few lines of that log.</p>",
+            "<p><strong>Merge or Storyboard's final merge looks wrong/out of sync</strong> — this "
+            "is almost always a Fast-mode limitation with mismatched sources; switch Merge to "
+            "Compatibility mode.</p>",
+            "<p><strong>Settings aren't saving</strong> — settings live in "
+            "<code>%APPDATA%\\FFmpegStudio\\settings.json</code>; make sure that location is "
+            "writable.</p>",
+            "<p><strong>Logs</strong> — a full rotating log file is written to "
+            "<code>%LOCALAPPDATA%\\FFmpegStudio\\Logs\\ffmpeg_studio.log</code> covering startup, "
+            "FFmpeg detection, every command executed, and errors.</p>",
+        ],
+    },
+]

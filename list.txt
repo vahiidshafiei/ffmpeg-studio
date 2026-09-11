@@ -1,0 +1,5 @@
+file 'a.jpg'
+duration 5
+file 'b.jpg'
+duration 5
+file 'b.jpg'

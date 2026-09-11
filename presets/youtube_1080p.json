@@ -1,0 +1,14 @@
+{
+  "id": "youtube_1080p",
+  "name": "YouTube 1080p",
+  "operation": "compress",
+  "description": "H.264 + AAC, tuned for YouTube uploads at 1080p.",
+  "params": {
+    "codec": "h264",
+    "crf": 20,
+    "preset": "slow",
+    "resolution": "1080p",
+    "audio_mode": "aac",
+    "audio_bitrate": "192k"
+  }
+}

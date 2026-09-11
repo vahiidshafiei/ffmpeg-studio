@@ -1,0 +1,133 @@
+/* FFmpeg Studio — base dark theme. Kept in one file so pages stay visually
+   consistent (spec rule: don't make every page look like a different app). */
+
+QWidget {
+    background-color: #1e1f26;
+    color: #e6e6ea;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 13px;
+}
+
+#sidebar {
+    background-color: #16171d;
+    border-right: 1px solid #2a2b33;
+}
+
+#navButton {
+    text-align: left;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #c7c7cf;
+}
+
+#navButton:hover {
+    background-color: #24252e;
+}
+
+#navButton:checked {
+    background-color: #3a4b8a;
+    color: white;
+    font-weight: 600;
+}
+
+#pageTitle {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+#sectionLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #a9abb8;
+    margin-top: 6px;
+}
+
+#mutedLabel {
+    color: #8b8d9a;
+}
+
+#statusLabelError {
+    color: #e0645f;
+    font-weight: 600;
+}
+
+#card {
+    background-color: #26272f;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+#quickActionButton {
+    background-color: #26272f;
+    border: 1px solid #33343d;
+    border-radius: 8px;
+    text-align: left;
+    padding-left: 14px;
+}
+
+#quickActionButton:hover {
+    background-color: #2f313c;
+    border-color: #3a4b8a;
+}
+
+#commandPreview {
+    background-color: #101116;
+    border: 1px solid #2a2b33;
+    border-radius: 6px;
+    font-family: Consolas, monospace;
+    color: #9fd88a;
+    padding: 6px;
+}
+
+QPushButton {
+    background-color: #3a4b8a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+}
+
+QPushButton:hover {
+    background-color: #46599e;
+}
+
+QPushButton:disabled {
+    background-color: #2c2d35;
+    color: #6f7180;
+}
+
+QGroupBox {
+    border: 1px solid #2a2b33;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding-top: 12px;
+    font-weight: 600;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 4px;
+}
+
+QProgressBar {
+    border: 1px solid #2a2b33;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #101116;
+}
+
+QProgressBar::chunk {
+    background-color: #3a4b8a;
+    border-radius: 6px;
+}
+
+QComboBox, QLineEdit, QSpinBox, QPlainTextEdit {
+    background-color: #26272f;
+    border: 1px solid #33343d;
+    border-radius: 6px;
+    padding: 4px 6px;
+}

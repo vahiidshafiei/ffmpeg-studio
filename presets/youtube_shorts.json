@@ -1,0 +1,15 @@
+{
+  "id": "youtube_shorts",
+  "name": "YouTube Shorts",
+  "operation": "shorts",
+  "description": "1080x1920 vertical, cropped to fill the frame, H.264 + AAC.",
+  "params": {
+    "mode": "crop",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "codec": "h264",
+    "crf": 21,
+    "audio_bitrate": "192k"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "lecture_compression",
+  "name": "Lecture Compression",
+  "operation": "compress",
+  "description": "Optimized for long educational/lecture videos — smaller files, screen content stays legible, audio kept clear.",
+  "params": {
+    "codec": "h264",
+    "crf": 26,
+    "preset": "slow",
+    "resolution": "720p",
+    "audio_mode": "aac",
+    "audio_bitrate": "128k"
+  }
+}

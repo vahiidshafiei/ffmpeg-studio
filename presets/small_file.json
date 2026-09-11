@@ -1,0 +1,14 @@
+{
+  "id": "small_file",
+  "name": "Small File",
+  "operation": "compress",
+  "description": "Prioritizes file size over quality — for sharing over email/chat where size limits matter.",
+  "params": {
+    "codec": "h265",
+    "crf": 32,
+    "preset": "medium",
+    "resolution": "720p",
+    "audio_mode": "aac",
+    "audio_bitrate": "96k"
+  }
+}

@@ -1,5 +1,8 @@
 # FFmpeg Studio
 
+<img width="1172" height="888" alt="Screenshot From 2026-09-11 19-12-01" src="https://github.com/user-attachments/assets/5898ad7a-0eec-4456-8f31-8d021c7d7710" />
+
+
 A modern PySide6 desktop GUI for FFmpeg on Windows — built to replace repetitive,
 manually-typed FFmpeg PowerShell commands with a real application, while never
 hiding what FFmpeg is actually doing.
